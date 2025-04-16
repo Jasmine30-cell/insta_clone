@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Inbox • Direct</title>
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <style>
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background-color: #fff;
+        display: flex;
+      }
+  
+      /* Sidebar */
+      .sidebar {
+        width: 80px;
+        height: 100vh;
+        background-color: white;
+        border-right: 1px solid #dbdbdb;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding-top: 20px;
+      }
+  
+      .sidebar a {
+        text-decoration: none;
+        font-size: 24px;
+        color: black;
+        margin: 20px 0;
+      }
+  
+      /* Main Layout */
+      .container {
+        display: flex;
+        width: 100%;
+      }
+  
+      .left-panel {
+        width: 320px;
+        border-right: 1px solid #dbdbdb;
+        display: flex;
+        flex-direction: column;
+        padding: 20px;
+      }
+  
+      .top-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-weight: bold;
+        font-size: 18px;
+        margin-bottom: 20px;
+      }
+  
+      .top-section i {
+        font-style: normal;
+        font-size: 24px;
+        cursor: pointer;
+      }
+  
+      .profile {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+  
+      .profile img {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-right: 10px;
+      }
+  
+      .tabs {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid #dbdbdb;
+        margin-bottom: 10px;
+      }
+  
+      .tabs div {
+        padding: 10px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+  
+      .tabs .active {
+        border-bottom: 2px solid black;
+      }
+  
+      .no-messages {
+        padding: 20px;
+        color: gray;
+      }
+  
+      .right-panel {
+        flex-grow: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        color: #444;
+      }
+  
+      .right-panel i {
+        font-size: 50px;
+        margin-bottom: 20px;
+      }
+  
+      .right-panel button {
+        margin-top: 10px;
+        background-color: #0095f6;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 8px;
+        cursor: pointer;
+        font-weight: bold;
+      }
+  
+      .right-panel button:hover {
+        background-color: #007cc2;
+      }
+  </style>
+</head>
+<body>
+  <!-- Sidebar -->
+  
+    <div class="sidebar">
+        <a href="{% url 'FriendUser' %}">🏠</a>
+        <a href="{% url 'SearchUser' %}">🔍</a>
+        <a href="{% url 'ExploreUser' %}">🧭</a>
+        <a href="{% url 'ReelsUser' %}">🎞</a>
+        <a href="{% url 'MessageUser' %}">✉</a>
+        <a href="{% url 'NotificationUser' %}">🔔</a>
+
+
+        <a href="{% url 'CreateUser' %}">➕</a>
+        <a href="{% url 'ProfileUser' %}">👤</a>
+
+          
+          
+      </div>
+      
+    <!-- Other links -->
+ 
+
+  <!-- Main Layout -->
+  <div class="container">
+    <!-- Left Panel -->
+    <div class="left-panel">
+      <div class="top-section">
+        
+        <i> instagram_user✎</i>
+      </div>
+
+      <div class="profile">
+        <img src="https://i.pravatar.cc/100?img=60" alt="profile">
+        <div><strong>Your note</strong></div>
+      </div>
+
+      <div class="tabs">
+        <div class="active">Messages</div>
+        <div>Requests</div>
+      </div>
+
+      <div class="no-messages">No messages found.</div>
+    </div>
+
+    <!-- Right Panel -->
+    <div class="right-panel">
+      <i>💬</i>
+      <h2>Your messages</h2>
+      <p>Send a message to start a chat.</p>
+      <button>Send message</button>
+    </div>
+  </div>
+</body>
+</html>

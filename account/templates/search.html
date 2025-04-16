@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <title>Search • Instagram</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      display: flex;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 80px;
+      height: 100vh;
+      background-color: white;
+      border-right: 1px solid #dbdbdb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      font-size: 24px;
+      color: black;
+      margin: 20px 0;
+      transition: transform 0.2s;
+    }
+
+    .sidebar a:hover {
+      transform: scale(1.2);
+    }
+
+    /* Search Panel */
+    .search-panel {
+      margin-left: 80px;
+      width: 400px;
+      height: 100vh;
+      border-right: 1px solid #dbdbdb;
+      padding: 30px 20px;
+      box-sizing: border-box;
+    }
+
+    .search-panel h2 {
+      margin: 0 0 20px;
+      font-size: 24px;
+    }
+
+    .search-panel input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    .results {
+      margin-top: 20px;
+    }
+
+    .result-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+    }
+
+    .result-item img {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .result-item span {
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="{% url 'FriendUser' %}">🏠</a>
+    <a href="{% url 'SearchUser' %}">🔍</a>
+    <a href="{% url 'ExploreUser' %}">🧭</a>
+    <a href="{% url 'ReelsUser' %}">🎞</a>
+    <a href="{% url 'MessageUser' %}">✉</a>
+    <a href="{% url 'NotificationUser' %}">🔔</a>
+    <a href="{% url 'CreateUser' %}">➕</a>
+    <a href="{% url 'ProfileUser' %}">👤</a>
+  </div>
+
+  <!-- Search Panel -->
+  <div class="search-panel">
+    <h2>Search</h2>
+    <input type="text" placeholder="Search users...">
+
+    <div class="results">
+      <!-- Example results -->
+      <div class="result-item">
+        <img src="https://i.pravatar.cc/150?img=5" alt="User">
+        <span>alex_09</span>
+      </div>
+      <div class="result-item">
+        <img src="https://i.pravatar.cc/150?img=12" alt="User">
+        <span>sara.khan</span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

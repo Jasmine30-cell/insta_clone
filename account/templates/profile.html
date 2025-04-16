@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Profile - Instagram</title>
+  <style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #fafafa;
+        margin: 0;
+        padding: 0;
+      }
+  
+      .profile-container {
+        max-width: 935px;
+        margin: 40px auto;
+        padding: 0 20px;
+      }
+  
+      .profile-header {
+        display: flex;
+        align-items: center;
+        padding-bottom: 40px;
+        border-bottom: 1px solid #dbdbdb;
+      }
+  
+      .profile-header img {
+        width: 150px;
+        height: 150px;
+        border-radius: 50%;
+        margin-right: 60px;
+        object-fit: cover;
+        background-color: #ddd;
+      }
+  
+      .profile-details {
+        flex-grow: 1;
+      }
+  
+      .username-section {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 20px;
+      }
+  
+      .username {
+        font-size: 28px;
+        font-weight: 300;
+      }
+  
+      .profile-buttons button {
+        background-color: #efefef;
+        border: 1px solid #dbdbdb;
+        border-radius: 5px;
+        padding: 5px 10px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+  
+      .profile-stats {
+        display: flex;
+        gap: 30px;
+        margin-bottom: 10px;
+      }
+  
+      .profile-stats span {
+        font-size: 16px;
+      }
+  
+      .full-name {
+        font-weight: 600;
+        font-size: 16px;
+      }
+  
+      .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        margin-top: 30px;
+        border-top: 1px solid #dbdbdb;
+        padding-top: 15px;
+        font-size: 12px;
+        font-weight: 600;
+        color: gray;
+        text-transform: uppercase;
+      }
+  
+      .post-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5px;
+        margin-top: 20px;
+      }
+  
+      .post-grid div {
+        width: 100%;
+        padding-top: 100%;
+        background-color: #ccc;
+      }
+      body {
+        margin: 0;
+        font-family: sans-serif;
+        display: flex;
+      }
+  
+      .sidebar {
+        width: 250px;
+        background-color: white;
+        border-right: 1px solid #dbdbdb;
+        padding: 20px;
+        height: 100vh;
+        position: fixed;
+      }
+  
+      .sidebar h2 {
+        font-family: 'Billabong', cursive;
+        font-size: 32px;
+      }
+  
+      .sidebar ul {
+        list-style: none;
+        padding: 0;
+      }
+  
+      .sidebar ul li {
+        padding: 15px 0;
+        font-size: 18px;
+        cursor: pointer;
+      }
+      a {
+    text-decoration: none;
+  }
+  .highlights {
+        display: flex;
+        gap: 30px;
+        margin-top: 30px;
+        overflow-x: auto;
+        padding: 10px 0;
+      }
+  
+      .highlight {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 5px;
+      }
+  
+      .highlight-circle {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        border: 1px solid #ccc;
+        background-color: #fff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        color: #888;
+        cursor: pointer;
+      }
+  
+      .highlight-label {
+        font-size: 12px;
+      }
+  
+      .tabs {
+        display: flex;
+        justify-content: center;
+        gap: 60px;
+        margin-top: 30px;
+        border-top: 1px solid #dbdbdb;
+        padding-top: 15px;
+        font-size: 12px;
+        font-weight: 600;
+        color: gray;
+        text-transform: uppercase;
+      }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <h2>Instagram</h2>
+    <ul>
+     <li><div onclick="goHome()" class="sidebar-item" style="cursor: pointer;">🏠 Home</div></li> 
+      {% comment %} <li><a href="friends.html">🏠 Home</a></li> {% endcomment %}
+
+      <li>🔍 Search</li>
+      <li>🧭 Explore</li>
+      <li>🎞 Reels</li>
+      <li>✉ Messages</li>
+      <li>🔔 Notifications</li>
+      <li>➕ Create</li>
+      <li><a href="profile.html">👤 Profile</a></li>
+    </ul>
+  </div>
+
+  <div class="profile-container">
+    <!-- Profile header content -->
+    <div class="profile-header">
+      <img id="profile-pic" src="" alt="Profile">
+      <div class="profile-details">
+        <div class="username-section">
+          <div class="username" id="username">username</div>
+          <div class="profile-buttons">
+            <button>Edit profile</button>
+            <button>View archive</button>
+          </div>
+        </div>
+        <div class="profile-stats">
+          <span><strong>0</strong> posts</span>
+          <span><strong>0</strong> followers</span>
+          <span><strong>0</strong> following</span>
+        </div>
+        <div class="full-name" id="full-name">Full Name</div>
+      </div>
+    </div>
+
+    <!-- Username Display Before Highlights -->
+    <div style="text-align: center; font-weight: 500; font-size: 14px; margin-bottom: 10px;" id="username-display"></div>
+
+    <!-- Highlight Section -->
+    <div class="highlights">
+      <div class="highlight">
+        <div class="highlight-circle">+</div>
+        <div class="highlight-label">New</div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <div>Posts</div>
+      <div>Saved</div>
+      <div>Tagged</div>
+    </div>
+
+    <div class="post-grid">
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </div>
+
+  <script>
+    const user = JSON.parse(localStorage.getItem("instagramUser"));
+    if (user) {
+      document.getElementById("profile-pic").src = user.profilePic || "https://via.placeholder.com/150";
+      document.getElementById("username").textContent = user.username;
+      document.getElementById("full-name").textContent = user.fullName;
+    } else {
+      window.location.href = "signup.html"; // redirect if not logged in
+    }
+
+    function goHome() {
+      window.location.href = "{% url 'FriendUser' %}";  // Redirect to the friends page
+    }
+  </script>
+</body>
+</html>

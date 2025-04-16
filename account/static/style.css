@@ -1,0 +1,133 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    font-family: Arial, sans-serif;
+    background-color: #fafafa;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+  }
+  
+  .phone-preview {
+    display: none;
+  }
+  
+  .form-container {
+    max-width: 350px;
+    width: 100%;
+  }
+  
+  .form-box {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    padding: 40px;
+    margin-bottom: 10px;
+    text-align: center;
+  }
+  
+  .logo {
+    font-family: 'Grand Hotel', cursive;
+    font-size: 36px;
+    margin-bottom: 20px;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    margin: 6px 0;
+    background: #fafafa;
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0095f6;
+    border: none;
+    color: white;
+    font-weight: bold;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .separator {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 20px 0;
+  }
+  
+  .separator::before, .separator::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid #dbdbdb;
+  }
+  
+  .separator span {
+    margin: 0 10px;
+    color: #8e8e8e;
+    font-weight: bold;
+  }
+  
+  .fb-login {
+    background: none;
+    border: none;
+    color: #385185;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  .forgot {
+    display: block;
+    margin-top: 12px;
+    font-size: 12px;
+    color: #00376b;
+  }
+  
+  .signup-box {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .signup-box a {
+    color: #0095f6;
+    text-decoration: none;
+  }
+  
+  .get-app {
+    text-align: center;
+    margin-top: 20px;
+  }
+  
+  .app-links img {
+    height: 40px;
+    margin: 5px;
+  }
+  
+  /* Responsive */
+  @media (min-width: 900px) {
+    .container {
+      gap: 50px;
+    }
+  
+    .phone-preview {
+      display: block;
+    }
+  
+    .phone-preview img {
+      height: 600px;
+    }
+  }
+  

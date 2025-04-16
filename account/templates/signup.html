@@ -1,0 +1,141 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <title>Sign Up - Instagram</title>
+  <link rel="stylesheet" href="{% static '/styles.css' %}">
+
+  {% comment %} <style>
+    .profile-pic-preview {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      margin: 10px auto;
+      display: block;
+      object-fit: cover;
+      border: 2px solid #ccc;
+    }
+  </style> {% endcomment %}
+</head>
+<body>
+  <div class="container">
+    <div class="form-container">
+      <div class="form-box">
+        <h1 class="logo">Instagram</h1>
+        <p style="margin-bottom: 15px; font-size: 14px;">Sign up to see photos and videos from your friends.</p>
+
+        <!-- <img id="preview" class="profile-pic-preview" src="https://via.placeholder.com/80" alt="Preview" /> -->
+
+        
+
+        <form method="POST" action='{% url 'SignUser'%}'>
+            {% csrf_token %}
+            {% if messages %}
+            <div>
+             {% for message in messages %}
+             {{message}}
+             {% endfor %}
+            </div>
+            {% endif %}
+            <input type="text" name="username" placeholder="Username" required>
+            <input type="email" name="email" placeholder="Email" required>
+            <input type="password" name="password" placeholder="Password" required>
+            <input type="file" id="profilePicInput" accept="image/*" onchange="previewProfilePic()" />
+            <button type="submit">Sign Up</button>
+        </form>
+        
+
+        {% comment %} <button onclick="signup()">Sign up</button> {% endcomment %}
+      </div>
+
+      <div class="signup-box">
+        <p>Have an account? <a href="{% url 'loginUser' %}">Login</a></p>
+      </div>
+    </div>
+  </div>
+
+  
+
+  
+
+  <script>
+    let profilePicData = "";
+
+    function previewProfilePic() {
+      const input = document.getElementById("profilePicInput");
+      const preview = document.getElementById("preview");
+
+      const file = input.files[0];
+      const reader = new FileReader();
+
+      reader.onload = function (e) {
+        profilePicData = e.target.result;
+        preview.src = profilePicData;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function signup() {
+      const userData = {
+        username: document.getElementById("username").value,
+        fullName: document.getElementById("fullname").value,
+        email: document.getElementById("email").value,
+        profilePic: profilePicData || "https://via.placeholder.com/150"
+      };
+
+      localStorage.setItem("instagramUser", JSON.stringify(userData));
+
+      alert("Account created successfully!");
+      window.location.href = "friends.html";
+    }
+    
+      function showSuccessPopup(message) {
+        const popup = document.getElementById("popup");
+        const popupMessage = document.getElementById("popup-message");
+        
+        popupMessage.textContent = message;
+        popup.classList.add("show");
+    
+        setTimeout(() => {
+          popup.classList.remove("show");
+        }, 3000); // Popup disappears after 3 seconds
+      }
+    
+      // Trigger the popup if redirected with success message from Django
+      {% if messages %}
+        {% for message in messages %}
+          showSuccessPopup("{{ message }}");
+        {% endfor %}
+      {% endif %}
+      <script>
+  function showPopup(message, type = 'success') {
+    const popup = document.getElementById("popup");
+    const popupMessage = document.getElementById("popup-message");
+
+    popupMessage.textContent = message;
+    popup.className = 'popup show ' + type;
+
+    setTimeout(() => {
+      popup.classList.remove("show");
+    }, 3000);
+  }
+
+  // Show Django messages as popups
+  {% if messages %}
+    {% for message in messages %}
+      showPopup("{{ message }}", "{{ message.tags }}");
+    {% endfor %}
+  {% endif %}
+</script>
+
+    </script>
+    
+  
+</body>
+</html>

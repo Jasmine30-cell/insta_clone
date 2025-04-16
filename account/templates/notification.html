@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Notifications • Instagram</title>
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      background-color: #fff;
+    }
+
+    /* Sidebar with visible background */
+    .sidebar {
+      width: 80px;
+      height: 100vh;
+      background-color: #f0f0f0; /* subtle visible color */
+      border-right: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      font-size: 24px;
+      color: black;
+      margin: 20px 0;
+      transition: transform 0.2s;
+    }
+
+    .sidebar a:hover {
+      transform: scale(1.2);
+    }
+
+    /* Main content for notifications */
+    .notification-panel {
+      margin-left: 80px;
+      width: 100%;
+      padding: 30px 20px;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      color: #666;
+    }
+
+    .notification-panel i {
+      font-size: 48px;
+      margin-bottom: 20px;
+    }
+
+    .notification-panel h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: normal;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="{% url 'FriendUser' %}">🏠</a>
+    <a href="{% url 'SearchUser' %}">🔍</a>
+    <a href="{% url 'ExploreUser' %}">🧭</a>
+    <a href="{% url 'ReelsUser' %}">🎞</a>
+    <a href="{% url 'MessageUser' %}">✉</a>
+    <a href="{% url 'NotificationUser' %}">🔔</a>
+    <a href="{% url 'CreateUser' %}">➕</a>
+    <a href="{% url 'ProfileUser' %}">👤</a>
+  </div>
+
+  <!-- Empty Notification Content -->
+  <div class="notification-panel">
+    <i>🔕</i>
+    <h2>No notifications yet</h2>
+  </div>
+
+</body>
+</html>

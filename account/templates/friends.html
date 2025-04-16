@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Find Friends - Instagram</title>
+  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fafafa;
+      margin: 0;
+      padding: 20px;
+    }
+    body {
+      margin: 0;
+      font-family: sans-serif;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: white;
+      border-right: 1px solid #dbdbdb;
+      padding: 20px;
+      height: 100vh;
+      position: fixed;
+    }
+
+    .sidebar h2 {
+      font-family: 'Billabong', cursive;
+      font-size: 32px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px 0;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: 270px;
+      padding: 40px;
+      flex-grow: 1;
+      justify-content: center;
+     align-items:center ;
+     text-align: center;
+    }
+
+
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: white;
+      padding: 10px;
+      margin: 10px 0;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    .user-info img {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      margin-right: 12px;
+    }
+
+    .user-info div {
+      line-height: 1.2;
+    }
+
+    .user-info .username {
+      font-weight: bold;
+    }
+
+    .follow-button {
+      padding: 5px 12px;
+      font-size: 14px;
+      background-color: black;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      min-width: 80px;
+    }
+
+    .follow-button.following {
+      background-color: #dbdbdb;
+      color: black;
+    }
+    a {
+  text-decoration: none;
+}
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 10;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0,0,0,0.6);
+}
+
+.modal-content {
+  background-color: #fff;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 12px;
+  width: 400px;
+  text-align: center;
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-bottom: 20px;
+  font-size: 18px;
+}
+
+.upload-area {
+  border: 2px dashed #ccc;
+  padding: 40px;
+  cursor: pointer;
+  background-color: #fafafa;
+}
+
+.upload-area button {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  margin-top: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.close {
+  position: absolute;
+  top: 15px;
+  right: 20px;
+  font-size: 24px;
+  cursor: pointer;
+}
+margin: 0;
+font-family: Arial, sans-serif;
+background-color: #fff;
+display: flex;
+}
+
+/* Sidebar */
+.sidebar {
+width: 80px;
+height: 100vh;
+background-color: white;
+border-right: 1px solid #dbdbdb;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding-top: 20px;
+}
+
+.sidebar a {
+text-decoration: none;
+font-size: 24px;
+color: black;
+margin: 20px 0;
+}
+
+
+  </style>
+</head>
+<body>
+    
+         <div class="sidebar">
+          <h2>Instagram</h2>
+          <ul>
+            <li>  <a href="{% url 'FriendUser' %}">🏠 Home </a></li>
+            <li><a href="{% url 'SearchUser' %}">🔍 Search </a></li>
+            <li> <a href="{% url 'ExploreUser' %}">🧭 Explore </a></li>
+            <li><a href="{% url 'ReelsUser' %}">🎞  Reels </a></li>
+            <li><a href="{% url 'MessageUser' %}">✉ Messages </a></li>
+            <li><a href="{% url 'NotificationUser' %}">🔔 Notifications </a></li>
+            <li><a href="{% url 'CreateUser' %}"><div class="sidebar-item" onclick="openModal()">➕ Create</div> </a></li> 
+            <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li> </ul>
+            {% comment %} <div class="sidebar">
+                <li><a href="{% url 'FriendUser' %}">🏠 Home </a></li>
+                <li><a href="{% url 'SearchUser' %}">🔍 Search</a></li>
+                <li><a href="{% url 'ExploreUser' %}">🧭 Explore</a></li>
+                <li><a href="{% url 'ReelsUser' %}">🎞 Reels</a></li>
+                <li><a href="{% url 'MessageUser' %}">✉ Messages</a></li>
+                <li><a href="{% url 'NotificationUser' %}">🔔 Notifications</a></li>
+                <li><a href="{% url 'CreateUser' %}">➕ Create</a></li>
+                <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li> {% endcomment %}
+        
+                  
+                  
+              {% comment %} </div> {% endcomment %}
+            <!-- Create Post Modal -->
+<div id="postModal" class="modal">
+    <div class="modal-content" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Create new post</h2>
+      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
+        <p>📷</p>
+        <p>Drag photos and videos here</p>
+        <button>Select from computer</button>
+        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" onchange="previewFile(event)" />
+      </div>
+      <img id="filePreview" style="display:none; max-width: 100%; margin-top: 20px;" />
+    </div>
+  </div>
+           
+            
+
+
+              
+          </ul>
+        </div>
+        <div class="main">
+            <div class="suggestion-box">
+              <h3>Find friends and accounts you like</h3>
+              <p>Try following 5 or more accounts for a personalized experience.</p>
+              <a href="profile.html" style="text-decoration: none; color: inherit;">
+                <div class="sidebar-profile" id="sidebarProfile">
+                  <!-- Will be filled by JS -->
+                </div>
+              </a>
+              
+        
+  <div class="container">
+    <h2>Suggested Users</h2>
+   
+      
+
+    <!-- Example user -->
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=1" alt="Profile">
+        <div>
+          <div class="username">jasminesoni_29</div>
+          <div style="font-size: 12px; color: gray;">Jasmine 🌸</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=2" alt="Profile">
+        <div>
+          <div class="username">zoya_khan3030</div>
+          <div style="font-size: 12px; color: gray;">Zoyaaaa</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=3" alt="Profile">
+        <div>
+          <div class="username">guneet_25</div>
+          <div style="font-size: 12px; color: gray;">GUNEET SONI 🌸</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=4" alt="Profile">
+        <div>
+          <div class="username">agamya1</div>
+          <div style="font-size: 12px; color: gray;">Agamyaa ‼️</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=5" alt="Profile">
+        <div>
+          <div class="username">daman_10</div>
+          <div style="font-size: 12px; color: gray;">Daman 💗</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=6" alt="Profile">
+        <div>
+          <div class="username">harshit.</div>
+          <div style="font-size: 12px; color: gray;">Harshit Singla</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+
+    <div class="user">
+      <div class="user-info">
+        <img src="https://i.pravatar.cc/48?img=7" alt="Profile">
+        <div>
+          <div class="username">monali</div>
+          <div style="font-size: 12px; color: gray;">MONALI SHARMA 🌻</div>
+        </div>
+      </div>
+      <button class="follow-button">Follow</button>
+    </div>
+  </div>
+ <!-- Create Post Modal -->
+<div id="createModal" class="modal">
+    <div class="modal-content" id="step1">
+      <span class="close" id="closeModalBtn">&times;</span>
+      <h2>Create new post</h2>
+      <div class="upload-area">
+        <p>Drag photos and videos here</p>
+        <input type="file" id="fileInput" accept="image/*" hidden>
+        <button onclick="document.getElementById('fileInput').click()">Select from computer</button>
+      </div>
+    </div>
+  
+    <!-- Step 2: Caption + Share -->
+    <div class="modal-content" id="step2" style="display: none;">
+      <span class="close" id="closeModalBtn2">&times;</span>
+      <h2>Preview & Share</h2>
+      <img id="previewImage" src="" style="max-width: 100%; border-radius: 10px;">
+      <textarea id="captionInput" placeholder="Write a caption..." style="width: 100%; margin-top: 10px;"></textarea>
+      <button id="shareBtn">Share</button>
+    </div>
+  </div>
+  
+  <!-- Profile Posts Section -->
+  <div id="profilePosts" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;"></div>
+  
+  
+
+
+  <script>
+    {% comment %} document.querySelectorAll('.follow-button').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.toggle('following');
+        button.textContent = button.classList.contains('following') ? 'Following' : 'Follow';
+      });
+    });
+    
+  const user = JSON.parse(localStorage.getItem("instagramUser"));
+  function openModal() {
+  document.getElementById("postModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("postModal").style.display = "none";
+  document.getElementById("filePreview").style.display = "none";
+}
+
+function previewFile(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const preview = document.getElementById("filePreview");
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+} {% endcomment %}
+
+{% comment %} function handleDrop(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  document.getElementById("fileInput").files = event.dataTransfer.files;
+  previewFile({ target: { files: [file] } });
+}
+
+<script>
+    function openModal() {
+      document.getElementById("postModal").style.display = "flex";
+    }
+  
+    function closeModal() {
+      document.getElementById("postModal").style.display = "none";
+      resetModal();
+    }
+  
+    function showPreview(event) {
+      const file = event.target.files[0];
+      if (file && file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          document.getElementById("previewImage").src = e.target.result;
+          document.getElementById("uploadStep").style.display = "none";
+          document.getElementById("captionStep").style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  
+    function sharePost() {
+      const imgSrc = document.getElementById("previewImage").src;
+      const caption = document.getElementById("captionInput").value;
+  
+      const post = document.createElement("div");
+      const img = document.createElement("img");
+      img.src = imgSrc;
+      img.alt = caption;
+  
+      post.appendChild(img);
+      document.getElementById("profilePosts").prepend(post);
+  
+      closeModal();
+    }
+  
+    function resetModal() {
+      document.getElementById("uploadStep").style.display = "block";
+      document.getElementById("captionStep").style.display = "none";
+      document.getElementById("fileInput").value = "";
+      document.getElementById("captionInput").value = "";
+      document.getElementById("previewImage").src = "";
+    }
+  
+    window.onclick = function(event) {
+      const modal = document.getElementById("postModal");
+      if (event.target === modal) {
+        closeModal();
+      }
+    }
+    // Elements
+    const modal = document.getElementById("createModal");
+    const step1 = document.getElementById("step1");
+    const step2 = document.getElementById("step2");
+    const fileInput = document.getElementById("fileInput");
+    const previewImage = document.getElementById("previewImage");
+    const captionInput = document.getElementById("captionInput");
+    const profilePosts = document.getElementById("profilePosts");
+    
+    // Show modal
+    document.getElementById("createButton").addEventListener("click", () => {
+      modal.style.display = "block";
+      step1.style.display = "block";
+      step2.style.display = "none";
+    });
+    
+    // Close buttons
+    document.getElementById("closeModalBtn").onclick = closeModal;
+    document.getElementById("closeModalBtn2").onclick = closeModal;
+    
+    function closeModal() {
+      modal.style.display = "none";
+      fileInput.value = "";
+      captionInput.value = "";
+      previewImage.src = "";
+    }
+    
+    // Go to Step 2 on image select
+    fileInput.addEventListener("change", function () {
+      const file = this.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          previewImage.src = e.target.result;
+          step1.style.display = "none";
+          step2.style.display = "block";
+        };
+        reader.readAsDataURL(file);
+      }
+    });
+    
+    // Share button adds post to profile
+    document.getElementById("shareBtn").addEventListener("click", () => {
+      const img = document.createElement("img");
+      img.src = previewImage.src;
+      img.alt = captionInput.value;
+      img.style.width = "200px";
+      img.style.borderRadius = "8px";
+    
+      const caption = document.createElement("p");
+      caption.innerText = captionInput.value;
+      caption.style.maxWidth = "200px";
+    
+      const post = document.createElement("div");
+      post.appendChild(img);
+      post.appendChild(caption);
+    
+      profilePosts.appendChild(post);
+      closeModal();
+    }); {% endcomment %}
+    document.querySelectorAll('.follow-button').forEach(button => {
+      button.addEventListener('click', () => {
+        button.classList.toggle('following');
+        button.textContent = button.classList.contains('following') ? 'Following' : 'Follow';
+      });
+    });
+    
+  const user = JSON.parse(localStorage.getItem("instagramUser"));
+  function openModal() {
+  document.getElementById("postModal").style.display = "block";
+}
+
+function closeModal() {
+  document.getElementById("postModal").style.display = "none";
+  document.getElementById("filePreview").style.display = "none";
+}
+
+function previewFile(event) {
+  const file = event.target.files[0];
+  const reader = new FileReader();
+
+  reader.onload = function (e) {
+    const preview = document.getElementById("filePreview");
+    preview.src = e.target.result;
+    preview.style.display = "block";
+  };
+
+  if (file) {
+    reader.readAsDataURL(file);
+  }
+}
+
+function handleDrop(event) {
+  event.preventDefault();
+  const file = event.dataTransfer.files[0];
+  document.getElementById("fileInput").files = event.dataTransfer.files;
+  previewFile({ target: { files: [file] } });
+}
+
+
+ 
+    
+  
+ 
+
+  </script>
+</body>
+</html>
