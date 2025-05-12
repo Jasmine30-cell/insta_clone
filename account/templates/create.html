@@ -107,6 +107,13 @@
       <input type="file" id="fileInput" accept="image/*">
     </div>
   </div>
+  {% for post in user_posts %}
+  <div class="post">
+    <img src="{{ post.image.url }}" alt="Post Image" />
+    <p>{{ post.caption }}</p>
+  </div>
+{% endfor %}
+
 
   <div class="caption-section" id="captionSection">
     <div id="previewContainer"></div>
@@ -135,35 +142,40 @@
       }
     });
   
-    document.getElementById('shareBtn').addEventListener('click', () => {
-      const file = fileInput.files[0];
-      const caption = document.getElementById('captionInput').value;
+   document.getElementById('shareBtn').addEventListener('click', async () => {
+    const file = fileInput.files[0];
+    const caption = document.getElementById('captionInput').value;
     
-      if (!file) {
+    if (!file) {
         alert("Please select an image.");
         return;
-      }
+    }
     
-      const formData = new FormData();
-      formData.append('image', file);
-      formData.append('caption', caption);
-      formData.append('csrfmiddlewaretoken', '{{ csrf_token }}');
-    
-      fetch('/upload_post/', {
-        method: 'POST',
-        body: formData
-      })
-      .then(response => {
-        if (response.ok) {
-          alert("Image uploaded successfully!");
+    try {
+        const formData = new FormData();
+        formData.append('image', file);
+        formData.append('caption', caption);
+        
+        const response = await fetch('/create/', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            }
+        });
+        
+        const data = await response.json();
+        
+        if (data.status === 'success') {
+            window.location.href = data.redirect_url;
         } else {
-          alert("Upload failed.");
+            alert(data.message);
         }
-      })
-      .then(() => {
-        window.location.href = "/friends/";
-      });
-    });
+    } catch (error) {
+        console.error('Error:', error);
+        alert("Failed to upload post. Please try again.");
+    }
+});
   </script>    
   
 

@@ -1,67 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Notifications • Instagram</title>
-  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Notifications</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
   <style>
-    body {
+    * {
       margin: 0;
-      font-family: Arial, sans-serif;
-      display: flex;
-      background-color: #fff;
+      padding: 0;
+      box-sizing: border-box;
     }
 
-    /* Sidebar with visible background */
+    body {
+      display: flex;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fafafa;
+    }
+
     .sidebar {
       width: 80px;
-      height: 100vh;
-      background-color: #f0f0f0; /* subtle visible color */
-      border-right: 1px solid #ccc;
+      background-color: #fff;
+      border-right: 1px solid #dbdbdb;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding-top: 20px;
+      height: 100vh;
       position: fixed;
       left: 0;
       top: 0;
     }
 
     .sidebar a {
-      text-decoration: none;
       font-size: 24px;
-      color: black;
-      margin: 20px 0;
-      transition: transform 0.2s;
+      margin: 25px 0;
+      text-decoration: none;
+      color: #262626;
     }
 
     .sidebar a:hover {
-      transform: scale(1.2);
+      color: #0095f6;
     }
 
-    /* Main content for notifications */
-    .notification-panel {
+    .notification-container {
       margin-left: 80px;
-      width: 100%;
       padding: 30px 20px;
-      box-sizing: border-box;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .notification-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+      text-align: center;
+    }
+
+    .notification {
+      background: #fff;
+      border: 1px solid #dbdbdb;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      height: 100vh;
-      color: #666;
+      gap: 15px;
     }
 
-    .notification-panel i {
-      font-size: 48px;
-      margin-bottom: 20px;
+    .notification img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
     }
 
-    .notification-panel h2 {
-      margin: 0;
-      font-size: 20px;
-      font-weight: normal;
+    .notification-text {
+      flex: 1;
+      font-size: 15px;
+      color: #333;
+    }
+
+    .notification-time {
+      font-size: 12px;
+      color: gray;
+    }
+
+    .notification-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .notification-actions button {
+      background: #0095f6;
+      color: white;
+      border: none;
+      padding: 6px 12px;
+      border-radius: 5px;
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .notification-actions button:hover {
+      background: #007fd1;
     }
   </style>
 </head>
@@ -77,12 +119,56 @@
     <a href="{% url 'NotificationUser' %}">🔔</a>
     <a href="{% url 'CreateUser' %}">➕</a>
     <a href="{% url 'ProfileUser' %}">👤</a>
+     
   </div>
 
-  <!-- Empty Notification Content -->
-  <div class="notification-panel">
-    <i>🔕</i>
-    <h2>No notifications yet</h2>
+  <!-- Notification Feed -->
+  <div class="notification-container">
+    <div class="notification-title">Notifications</div>
+
+    <!-- Sample Notifications -->
+    <div class="notification">
+      <img src="https://randomuser.me/api/portraits/women/1.jpg" alt="user" />
+      <div class="notification-text">
+        <strong>emma_watson</strong> liked your post.
+        <div class="notification-time">2h ago</div>
+      </div>
+    </div>
+
+    <div class="notification">
+      <img src="https://randomuser.me/api/portraits/men/2.jpg" alt="user" />
+      <div class="notification-text">
+        <strong>john_doe</strong> started following you.
+        <div class="notification-time">5h ago</div>
+      </div>
+      <div class="notification-actions">
+        <button>Follow Back</button>
+      </div>
+    </div>
+
+    <div class="notification">
+      <img src="https://randomuser.me/api/portraits/women/3.jpg" alt="user" />
+      <div class="notification-text">
+        <strong>sophie23</strong> commented: "🔥🔥🔥"
+        <div class="notification-time">8h ago</div>
+      </div>
+    </div>
+
+    <div class="notification">
+      <img src="https://randomuser.me/api/portraits/men/4.jpg" alt="user" />
+      <div class="notification-text">
+        <strong>mike88</strong> mentioned you in a comment.
+        <div class="notification-time">1d ago</div>
+      </div>
+    </div>
+
+    <div class="notification">
+      <img src="https://randomuser.me/api/portraits/women/5.jpg" alt="user" />
+      <div class="notification-text">
+        <strong>kate_l</strong> liked your reel.
+        <div class="notification-time">2d ago</div>
+      </div>
+    </div>
   </div>
 
 </body>

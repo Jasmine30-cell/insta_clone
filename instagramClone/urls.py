@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from account.views import *
+from django.conf import settings
+from django.conf.urls.static import static
+
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -31,4 +35,14 @@ urlpatterns = [
     path("explore/",ExploreUser, name="ExploreUser"),
     path("reels/",ReelsUser, name="ReelsUser"),
     path("create/",CreateUser, name="CreateUser"),
+    path("logout/",logoutUser,name='logoutUser'),
+    # path("feed/",feedUser,name='feedUser'),
+    path('follow/<str:username>/',follow_user, name='follow_user'),
+    path('follow/<int:user_id>/',follow_user, name='follow_user'),
+    path('follow-user/', follow_user, name='follow_user'),
+    path('upload_post/', upload_post, name='upload_post'),
+    path('create/', create_post, name='create_post'),
+   
+    
 ]
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

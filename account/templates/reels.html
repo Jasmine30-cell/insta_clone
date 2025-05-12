@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Reels</title>
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: black;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+    }
+
+    .sidebar {
+      width: 80px;
+      background-color: #fff;
+      border-right: 1px solid #dbdbdb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      height: 100vh;
+      position: fixed;
+      left: 0;
+      top: 0;
+      z-index: 10;
+    }
+
+    .sidebar a {
+      font-size: 24px;
+      margin: 25px 0;
+      text-decoration: none;
+      color: #262626;
+    }
+
+    .sidebar a:hover {
+      color: #0095f6;
+    }
+
+    .reels-container {
+      margin-left: 80px;
+      height: 100vh;
+      overflow-y: scroll;
+      scroll-snap-type: y mandatory;
+      width: calc(100% - 80px);
+    }
+
+    .reel {
+      scroll-snap-align: start;
+      position: relative;
+      height: 100vh;
+      width: 100%;
+      max-width: 500px;
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: black;
+    }
+
+    .reel video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .overlay {
+      position: absolute;
+      bottom: 80px;
+      left: 15px;
+      color: white;
+      z-index: 2;
+    }
+
+    .overlay .username {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .actions {
+      position: absolute;
+      right: 15px;
+      bottom: 100px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      color: white;
+      z-index: 2;
+    }
+
+    .actions i {
+      font-size: 24px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .actions i:hover {
+      transform: scale(1.2);
+    }
+
+    .actions span {
+      font-size: 14px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <a href="{% url 'FriendUser' %}">🏠</a>
+    <a href="{% url 'SearchUser' %}">🔍</a>
+    <a href="{% url 'ExploreUser' %}">🧭</a>
+    <a href="{% url 'ReelsUser' %}">🎞</a>
+    <a href="{% url 'MessageUser' %}">✉</a>
+    <a href="{% url 'NotificationUser' %}">🔔</a>
+    <a href="{% url 'CreateUser' %}">➕</a>
+    <a href="{% url 'ProfileUser' %}">
+      <img src="{{ user.profile.profile_pic.url }}" style="width: 30px; height: 30px; border-radius: 50%;" />
+    </a>
+  </div>
+
+  <!-- Reels Container -->
+  <div class="reels-container" id="reels-container">
+    <!-- 10 sample reels -->
+    <!-- Use different video URLs if available -->
+    <!-- You can replace these links with your own uploads -->
+
+    <!-- Sample 10 Reels -->
+    <div class="reel"><video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop></video>
+      <div class="overlay"><div class="username">user1</div><div class="caption">Cool reel 1</div></div>
+      <div class="actions">
+        <div onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i><span class="like-count">123</span></div>
+        <div><i class="fa-regular fa-comment"></i><span>30</span></div>
+        <div><i class="fa-solid fa-share"></i><span>Share</span></div>
+      </div>
+    </div>
+
+    <div class="reel"><video src="https://www.w3schools.com/html/movie.mp4" autoplay muted loop></video>
+      <div class="overlay"><div class="username">user2</div><div class="caption">Reel 2 is amazing!</div></div>
+      <div class="actions">
+        <div onclick="toggleLike(this)"><i class="fa-regular fa-heart"></i><span class="like-count">211</span></div>
+        <div><i class="fa-regular fa-comment"></i><span>48</span></div>
+        <div><i class="fa-solid fa-share"></i><span>Share</span></div>
+      </div>
+    </div>
+
+    <!-- Repeat the above block 8 more times with different data -->
+    ${Array.from({ length: 8 }, (_, i) => `
+      <div class="reel">
+        <video src="https://www.w3schools.com/html/mov_bbb.mp4" autoplay muted loop></video>
+        <div class="overlay">
+          <div class="username">user${i + 3}</div>
+          <div class="caption">Great reel #${i + 3}</div>
+        </div>
+        <div class="actions">
+          <div onclick="toggleLike(this)">
+            <i class="fa-regular fa-heart"></i>
+            <span class="like-count">${Math.floor(Math.random() * 300)}</span>
+          </div>
+          <div>
+            <i class="fa-regular fa-comment"></i>
+            <span>${Math.floor(Math.random() * 90)}</span>
+          </div>
+          <div>
+            <i class="fa-solid fa-share"></i>
+            <span>Share</span>
+          </div>
+        </div>
+      </div>
+    `).join('')}
+  </div>
+
+  <script>
+    function toggleLike(el) {
+      const icon = el.querySelector("i");
+      const count = el.querySelector(".like-count");
+      let likes = parseInt(count.textContent);
+      if (icon.classList.contains("fa-regular")) {
+        icon.classList.remove("fa-regular");
+        icon.classList.add("fa-solid");
+        icon.style.color = "red";
+        count.textContent = likes + 1;
+      } else {
+        icon.classList.remove("fa-solid");
+        icon.classList.add("fa-regular");
+        icon.style.color = "white";
+        count.textContent = likes - 1;
+      }
+    }
+
+    const videos = document.querySelectorAll(".reel video");
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.play();
+        } else {
+          entry.target.pause();
+        }
+      });
+    }, { threshold: 0.6 });
+
+    videos.forEach(video => observer.observe(video));
+  </script>
+
+</body>
+</html>

@@ -1,181 +1,299 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Inbox • Direct</title>
-  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <meta charset="UTF-8" />
+  <title>Direct Messages • Instagram Clone</title>
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
-        margin: 0;
-        font-family: Arial, sans-serif;
-        background-color: #fff;
-        display: flex;
-      }
-  
-      /* Sidebar */
-      .sidebar {
-        width: 80px;
-        height: 100vh;
-        background-color: white;
-        border-right: 1px solid #dbdbdb;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding-top: 20px;
-      }
-  
-      .sidebar a {
-        text-decoration: none;
-        font-size: 24px;
-        color: black;
-        margin: 20px 0;
-      }
-  
-      /* Main Layout */
-      .container {
-        display: flex;
-        width: 100%;
-      }
-  
-      .left-panel {
-        width: 320px;
-        border-right: 1px solid #dbdbdb;
-        display: flex;
-        flex-direction: column;
-        padding: 20px;
-      }
-  
-      .top-section {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-weight: bold;
-        font-size: 18px;
-        margin-bottom: 20px;
-      }
-  
-      .top-section i {
-        font-style: normal;
-        font-size: 24px;
-        cursor: pointer;
-      }
-  
-      .profile {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-      }
-  
-      .profile img {
-        width: 50px;
-        height: 50px;
-        border-radius: 50%;
-        margin-right: 10px;
-      }
-  
-      .tabs {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid #dbdbdb;
-        margin-bottom: 10px;
-      }
-  
-      .tabs div {
-        padding: 10px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-  
-      .tabs .active {
-        border-bottom: 2px solid black;
-      }
-  
-      .no-messages {
-        padding: 20px;
-        color: gray;
-      }
-  
-      .right-panel {
-        flex-grow: 1;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-direction: column;
-        color: #444;
-      }
-  
-      .right-panel i {
-        font-size: 50px;
-        margin-bottom: 20px;
-      }
-  
-      .right-panel button {
-        margin-top: 10px;
-        background-color: #0095f6;
-        color: white;
-        border: none;
-        padding: 8px 16px;
-        border-radius: 8px;
-        cursor: pointer;
-        font-weight: bold;
-      }
-  
-      .right-panel button:hover {
-        background-color: #007cc2;
-      }
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      height: 100vh;
+      background-color: #fafafa;
+    }
+
+    .sidebar {
+      width: 80px;
+      background: #fff;
+      border-right: 1px solid #dbdbdb;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+    }
+
+    .sidebar a {
+      font-size: 28px;
+      margin: 25px 0;
+      text-decoration: none;
+      color: #262626;
+      transition: color 0.2s;
+    }
+
+    .sidebar a:hover {
+      color: #0095f6;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .top-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 24px;
+      font-size: 20px;
+      font-weight: 600;
+      background-color: #fff;
+      border-bottom: 1px solid #dbdbdb;
+    }
+
+    .top-header .logo {
+      font-family: 'Instagram', sans-serif;
+      font-size: 24px;
+      color: #262626;
+      font-weight: bold;
+    }
+
+    .top-header .username {
+      font-size: 18px;
+      font-weight: 600;
+      color: #262626;
+    }
+
+    .main-content {
+      display: flex;
+      flex-grow: 1;
+      background-color: #fff;
+    }
+
+    .left-panel {
+      width: 320px;
+      border-right: 1px solid #dbdbdb;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #fafafa;
+    }
+
+    .user {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      cursor: pointer;
+      border-radius: 10px;
+      transition: background 0.2s;
+      margin-bottom: 10px;
+    }
+
+    .user:hover {
+      background: #f0f0f0;
+    }
+
+    .user img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      margin-right: 15px;
+    }
+
+    .chat-panel {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .chat-header {
+      padding: 20px;
+      font-weight: 600;
+      border-bottom: 1px solid #dbdbdb;
+      background-color: #fff;
+      color: #262626;
+    }
+
+    .chat-box {
+      flex-grow: 1;
+      padding: 20px;
+      overflow-y: auto;
+      background-color: #f0f0f0;
+    }
+
+    .message {
+      margin-bottom: 15px;
+      max-width: 60%;
+      padding: 12px 15px;
+      border-radius: 20px;
+      word-wrap: break-word;
+      font-size: 14px;
+      line-height: 18px;
+      font-weight: 500;
+    }
+
+    .sent {
+      align-self: flex-end;
+      background-color: #0095f6;
+      color: #fff;
+    }
+
+    .received {
+      align-self: flex-start;
+      background-color: #e5e5e5;
+      color: #262626;
+    }
+
+    .chat-input {
+      display: flex;
+      padding: 10px 20px;
+      background-color: #fff;
+      border-top: 1px solid #dbdbdb;
+    }
+
+    .chat-input input {
+      flex-grow: 1;
+      padding: 12px 15px;
+      border-radius: 30px;
+      border: 1px solid #dbdbdb;
+      outline: none;
+      font-size: 14px;
+      margin-right: 10px;
+    }
+
+    .chat-input button {
+      padding: 12px 15px;
+      background-color: #0095f6;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+
+    .chat-input button:hover {
+      background-color: #007acc;
+    }
+
+    .chat-input button:active {
+      background-color: #005d99;
+    }
+
+    .chat-box::-webkit-scrollbar {
+      width: 8px;
+    }
+
+    .chat-box::-webkit-scrollbar-thumb {
+      background-color: #ccc;
+      border-radius: 10px;
+    }
   </style>
 </head>
 <body>
+
   <!-- Sidebar -->
-  
-    <div class="sidebar">
-        <a href="{% url 'FriendUser' %}">🏠</a>
-        <a href="{% url 'SearchUser' %}">🔍</a>
-        <a href="{% url 'ExploreUser' %}">🧭</a>
-        <a href="{% url 'ReelsUser' %}">🎞</a>
-        <a href="{% url 'MessageUser' %}">✉</a>
-        <a href="{% url 'NotificationUser' %}">🔔</a>
+  <div class="sidebar">
+    <a href="{% url 'FriendUser' %}">🏠</a>
+    <a href="{% url 'SearchUser' %}">🔍</a>
+    <a href="{% url 'ExploreUser' %}">🧭</a>
+    <a href="{% url 'ReelsUser' %}">🎞</a>
+    <a href="{% url 'MessageUser' %}">✉</a>
+    <a href="{% url 'NotificationUser' %}">🔔</a>
+    <a href="{% url 'CreateUser' %}">➕</a>
+    <a href="{% url 'ProfileUser' %}">👤 </a>
+  </div>
 
-
-        <a href="{% url 'CreateUser' %}">➕</a>
-        <a href="{% url 'ProfileUser' %}">👤</a>
-
-          
-          
-      </div>
-      
-    <!-- Other links -->
- 
-
-  <!-- Main Layout -->
+  <!-- Main Area -->
   <div class="container">
-    <!-- Left Panel -->
-    <div class="left-panel">
-      <div class="top-section">
-        
-        <i> instagram_user✎</i>
-      </div>
 
-      <div class="profile">
-        <img src="https://i.pravatar.cc/100?img=60" alt="profile">
-        <div><strong>Your note</strong></div>
-      </div>
-
-      <div class="tabs">
-        <div class="active">Messages</div>
-        <div>Requests</div>
-      </div>
-
-      <div class="no-messages">No messages found.</div>
+    <!-- Top Instagram Header -->
+    <div class="top-header">
+      <div class="logo">Instagram</div>
+      <div class="username">{{ user.username }}</div>
     </div>
 
-    <!-- Right Panel -->
-    <div class="right-panel">
-      <i>💬</i>
-      <h2>Your messages</h2>
-      <p>Send a message to start a chat.</p>
-      <button>Send message</button>
+    <!-- Chat Layout -->
+    <div class="main-content">
+      <!-- User List -->
+      <div class="left-panel" id="user-list">
+        <div class="user" onclick="openChat('john')">
+          <img src="https://i.pravatar.cc/100?img=12" />
+          <span>John</span>
+        </div>
+        <div class="user" onclick="openChat('emma')">
+          <img src="https://i.pravatar.cc/100?img=32" />
+          <span>Emma</span>
+        </div>
+        <div class="user" onclick="openChat('mike')">
+          <img src="https://i.pravatar.cc/100?img=44" />
+          <span>Mike</span>
+        </div>
+      </div>
+
+      <!-- Chat Panel -->
+      <div class="chat-panel">
+        <div class="chat-header" id="chat-header">Select a user to start chat</div>
+        <div class="chat-box" id="chat-box"></div>
+        <div class="chat-input">
+          <input type="text" id="message-input" placeholder="Type a message..." />
+          <button onclick="sendMessage()">Send</button>
+        </div>
+      </div>
     </div>
   </div>
+
+  <!-- JavaScript -->
+  <script>
+    const chatBox = document.getElementById('chat-box');
+    const chatHeader = document.getElementById('chat-header');
+    const messageInput = document.getElementById('message-input');
+
+    const messages = {
+      john: [],
+      emma: [],
+      mike: []
+    };
+
+    let currentUser = null;
+
+    function openChat(user) {
+      currentUser = user;
+      chatHeader.textContent = 'Chat with ' + capitalize(user);
+      renderMessages();
+    }
+
+    function sendMessage() {
+      const msg = messageInput.value.trim();
+      if (!msg || !currentUser) return;
+
+      messages[currentUser].push({ text: msg, sender: 'me' });
+      messageInput.value = '';
+      renderMessages();
+
+      // Simulated reply
+      setTimeout(() => {
+        messages[currentUser].push({ text: 'Reply from ' + capitalize(currentUser), sender: 'them' });
+        renderMessages();
+      }, 800);
+    }
+
+    function renderMessages() {
+      chatBox.innerHTML = '';
+      if (!currentUser) return;
+
+      messages[currentUser].forEach(msg => {
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', msg.sender === 'me' ? 'sent' : 'received');
+        msgDiv.textContent = msg.text;
+        chatBox.appendChild(msgDiv);
+      });
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function capitalize(str) {
+      return str.charAt(0).toUpperCase() + str.slice(1);
+    }
+  </script>
 </body>
 </html>

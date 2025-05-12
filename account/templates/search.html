@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <title>Instagram Search</title>
   <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
-  <title>Search • Instagram</title>
   <style>
-    body {
+    * {
+      box-sizing: border-box;
       margin: 0;
+      padding: 0;
+    }
+
+    body {
       font-family: Arial, sans-serif;
       background-color: #fff;
       display: flex;
@@ -14,44 +19,61 @@
 
     /* Sidebar */
     .sidebar {
-      width: 80px;
+      width: 250px;
       height: 100vh;
       background-color: white;
       border-right: 1px solid #dbdbdb;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding-top: 20px;
+      padding: 20px;
       position: fixed;
       top: 0;
       left: 0;
+      display: flex;
+      flex-direction: column;
     }
 
-    .sidebar a {
+    .sidebar h2 {
+      font-family: 'Billabong', cursive;
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+    }
+
+    .sidebar ul li {
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul li a {
       text-decoration: none;
-      font-size: 24px;
-      color: black;
-      margin: 20px 0;
-      transition: transform 0.2s;
+      font-size: 25px;
+      color: #000;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border-radius: 10px;
+      transition: background-color 0.2s ease;
     }
 
-    .sidebar a:hover {
-      transform: scale(1.2);
+    .sidebar ul li a:hover {
+      background-color: #f2f2f2;
     }
 
     /* Search Panel */
     .search-panel {
-      margin-left: 80px;
+      margin-left: 250px;
       width: 400px;
       height: 100vh;
       border-right: 1px solid #dbdbdb;
       padding: 30px 20px;
-      box-sizing: border-box;
+      overflow-y: auto;
     }
 
     .search-panel h2 {
-      margin: 0 0 20px;
       font-size: 24px;
+      margin-bottom: 20px;
     }
 
     .search-panel input[type="text"] {
@@ -63,14 +85,32 @@
       outline: none;
     }
 
-    .results {
-      margin-top: 20px;
+    .section-title {
+      margin-top: 30px;
+      font-weight: bold;
+      font-size: 14px;
+      color: #999;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .results, .recent-searches {
+      margin-top: 10px;
     }
 
     .result-item {
       display: flex;
       align-items: center;
       margin-bottom: 15px;
+      cursor: pointer;
+      transition: background 0.2s ease;
+      padding: 5px;
+      border-radius: 6px;
+    }
+
+    .result-item:hover {
+      background-color: #f2f2f2;
     }
 
     .result-item img {
@@ -83,39 +123,123 @@
     .result-item span {
       font-weight: bold;
     }
+
+    .clear-btn {
+      background: none;
+      border: none;
+      color: #3897f0;
+      font-size: 14px;
+      font-weight: bold;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
   <!-- Sidebar -->
   <div class="sidebar">
-    <a href="{% url 'FriendUser' %}">🏠</a>
-    <a href="{% url 'SearchUser' %}">🔍</a>
-    <a href="{% url 'ExploreUser' %}">🧭</a>
-    <a href="{% url 'ReelsUser' %}">🎞</a>
-    <a href="{% url 'MessageUser' %}">✉</a>
-    <a href="{% url 'NotificationUser' %}">🔔</a>
-    <a href="{% url 'CreateUser' %}">➕</a>
-    <a href="{% url 'ProfileUser' %}">👤</a>
+    <h2>Instagram</h2>
+    <ul>
+      <li><a href="{% url 'FriendUser' %}">🏠 Home</a></li>
+      <li><a href="{% url 'SearchUser' %}">🔍 Search</a></li>
+      <li><a href="{% url 'ExploreUser' %}">🧭 Explore</a></li>
+      <li><a href="{% url 'ReelsUser' %}">🎞 Reels</a></li>
+      <li><a href="{% url 'MessageUser' %}">✉ Messages</a></li>
+      <li><a href="{% url 'NotificationUser' %}">🔔 Notifications</a></li>
+      <li><a href="{% url 'CreateUser' %}">➕ Create</a></li>
+      <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li>
+    </ul>
   </div>
 
   <!-- Search Panel -->
   <div class="search-panel">
     <h2>Search</h2>
-    <input type="text" placeholder="Search users...">
+    <input type="text" id="searchInput" placeholder="Search users by ID..." oninput="searchUser()">
 
-    <div class="results">
-      <!-- Example results -->
-      <div class="result-item">
-        <img src="https://i.pravatar.cc/150?img=5" alt="User">
-        <span>alex_09</span>
-      </div>
-      <div class="result-item">
-        <img src="https://i.pravatar.cc/150?img=12" alt="User">
-        <span>sara.khan</span>
-      </div>
+    <div class="section-title">
+      <span>Recent</span>
+      <button class="clear-btn" onclick="clearHistory()">Clear All</button>
     </div>
+    <div class="recent-searches" id="recentSearches"></div>
+
+    <div class="section-title"><span>Results</span></div>
+    <div class="results" id="resultsContainer"></div>
   </div>
 
+  <!-- JavaScript -->
+  <script>
+    const users = [
+      { id: 1, username: 'mehak10', profilePic: 'https://i.pravatar.cc/150?img=5' },
+      { id: 2, username: 'arun_372', profilePic: 'https://i.pravatar.cc/150?img=12' },
+      { id: 3, username: 'gurkaran_singh', profilePic: 'https://i.pravatar.cc/150?img=3' },
+      { id: 4, username: 'ajaypal', profilePic: 'https://i.pravatar.cc/150?img=20' },
+      { id: 5, username: 'jasmine_30', profilePic: 'https://i.pravatar.cc/150?img=32' },
+      { id: 6, username: 'agamya_3', profilePic: 'https://i.pravatar.cc/150?img=10' },
+      { id: 7, username: 'kanishika_2', profilePic: 'https://i.pravatar.cc/150?img=9' },
+      { id: 8, username: 'harshit_24', profilePic: 'https://i.pravatar.cc/150?img=6' }
+    ];
+
+    let recentSearches = [];
+
+    function searchUser() {
+      const input = document.getElementById("searchInput").value.toLowerCase();
+      const resultsContainer = document.getElementById("resultsContainer");
+      resultsContainer.innerHTML = '';
+
+      if (input === '') return;
+
+      const filtered = users.filter(user => user.username.toLowerCase().includes(input));
+
+      filtered.forEach(user => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+        div.onclick = () => addToRecent(user);
+
+        const img = document.createElement('img');
+        img.src = user.profilePic;
+
+        const name = document.createElement('span');
+        name.textContent = user.username;
+
+        div.appendChild(img);
+        div.appendChild(name);
+        resultsContainer.appendChild(div);
+      });
+    }
+
+    function addToRecent(user) {
+      if (!recentSearches.some(u => u.username === user.username)) {
+        recentSearches.unshift(user);
+        if (recentSearches.length > 10) recentSearches.pop();
+      }
+      document.getElementById("searchInput").value = '';
+      document.getElementById("resultsContainer").innerHTML = '';
+      renderRecent();
+    }
+
+    function renderRecent() {
+      const container = document.getElementById("recentSearches");
+      container.innerHTML = '';
+      recentSearches.forEach(user => {
+        const div = document.createElement('div');
+        div.className = 'result-item';
+
+        const img = document.createElement('img');
+        img.src = user.profilePic;
+
+        const name = document.createElement('span');
+        name.textContent = user.username;
+
+        div.appendChild(img);
+        div.appendChild(name);
+        container.appendChild(div);
+      });
+    }
+
+    function clearHistory() {
+      recentSearches = [];
+      renderRecent();
+    }
+  </script>
 </body>
 </html>

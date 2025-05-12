@@ -1,0 +1,205 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Explore</title>
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #fafafa;
+      overflow-x: hidden;
+    }
+
+    h2 {
+      text-align: center;
+      margin: 20px 0;
+    }
+
+    .explore-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+      gap: 10px;
+      padding: 20px;
+      margin-left: 80px;
+    }
+
+    .explore-item {
+      width: 100%;
+      aspect-ratio: 1 / 1;
+      overflow: hidden;
+      border-radius: 10px;
+      background-color: #000;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+
+    .explore-item:hover {
+      transform: scale(1.03);
+    }
+
+    .explore-item img,
+    .explore-item video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .sidebar {
+      width: 80px;
+      height: 100vh;
+      background-color: #f0f0f0;
+      border-right: 1px solid #ccc;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-top: 20px;
+      position: fixed;
+      left: 0;
+      top: 0;
+    }
+
+    .sidebar a {
+      text-decoration: none;
+      font-size: 24px;
+      color: black;
+      margin: 20px 0;
+      transition: transform 0.2s;
+    }
+
+    .sidebar a:hover {
+      transform: scale(1.2);
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      display: none;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      z-index: 9999;
+    }
+
+    .modal-content {
+      max-width: 90%;
+      max-height: 80%;
+      border-radius: 10px;
+    }
+
+    .modal-actions {
+      margin-top: 10px;
+      display: flex;
+      gap: 15px;
+      justify-content: center;
+    }
+
+    .modal-actions button {
+      background: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 20px;
+      right: 30px;
+      font-size: 30px;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <a href="{% url 'FriendUser' %}">🏠</a>
+    <a href="{% url 'SearchUser' %}">🔍</a>
+    <a href="{% url 'ExploreUser' %}">🧭</a>
+    <a href="{% url 'ReelsUser' %}">🎞</a>
+    <a href="{% url 'MessageUser' %}">✉</a>
+    <a href="{% url 'NotificationUser' %}">🔔</a>
+    <a href="{% url 'CreateUser' %}">➕</a>
+    <a href="{% url 'ProfileUser' %}">👤</a>
+  </div>
+
+  <h2>Explore</h2>
+  <div class="explore-grid">
+    <div class="explore-item"><img src="{% static 'posts/post1.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/post2.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><video src="{% static 'posts/video.mp4' %}" muted></video></div>
+    <div class="explore-item"><video src="{% static 'posts/video2.mp4' %}" muted></video></div>
+    <div class="explore-item"><img src="{% static 'posts/post3.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/post4.png' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/post5.webp' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/girl2.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/food1.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/boy2.jpg' %}" alt="Post"></div>
+        <div class="explore-item"><video src="{% static 'posts/video.mp4' %}" muted></video></div>
+
+    <div class="explore-item"><img src="{% static 'posts/girl4.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><img src="{% static 'posts/boy1.jpg' %}" alt="Post"></div>
+    <div class="explore-item"><video src="{% static 'posts/video.mp4' %}" muted></video></div>
+        <div class="explore-item"><img src="{% static 'posts/friends.jpg' %}" alt="Post"></div>
+
+  </div>
+
+  <div class="modal" id="modal">
+    <span class="modal-close" onclick="closeModal()">&times;</span>
+    <div id="modal-media-container"></div>
+    <div class="modal-actions">
+      <button onclick="likePost()">❤️ Like</button>
+      <button onclick="downloadMedia()">⬇️ Download</button>
+    </div>
+  </div>
+
+  <script>
+    const modal = document.getElementById('modal');
+    const modalMediaContainer = document.getElementById('modal-media-container');
+    let currentMedia = null;
+
+    document.querySelectorAll('.explore-item img, .explore-item video').forEach(media => {
+      media.addEventListener('click', () => {
+        currentMedia = media.cloneNode(true);
+        if (currentMedia.tagName === "VIDEO") {
+          currentMedia.setAttribute("controls", true);
+          currentMedia.setAttribute("autoplay", true);
+        }
+        modalMediaContainer.innerHTML = '';
+        modalMediaContainer.appendChild(currentMedia);
+        modal.style.display = 'flex';
+      });
+    });
+
+    function closeModal() {
+      modal.style.display = 'none';
+      modalMediaContainer.innerHTML = '';
+    }
+
+    function likePost() {
+      alert("You liked this post!");
+    }
+
+    function downloadMedia() {
+      const link = document.createElement('a');
+      link.href = currentMedia.src;
+      link.download = 'media';
+      link.click();
+    }
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeModal();
+    });
+  </script>
+</body>
+</html>

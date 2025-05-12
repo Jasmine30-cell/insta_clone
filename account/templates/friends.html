@@ -1,558 +1,774 @@
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Find Friends - Instagram</title>
-  <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Instagram Feed</title>
+    <link rel="icon" href="https://www.instagram.com/static/images/ico/favicon-192.png/68d99ba29cc8.png" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #fafafa;
+    * {
       margin: 0;
-      padding: 20px;
-    }
-    body {
-      margin: 0;
-      font-family: sans-serif;
-      display: flex;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     }
 
+    body {
+      background-color: #fafafa;
+      display: flex;
+      justify-content: center;
+    }
+    
+
+    /* Sidebar Styles */
     .sidebar {
-      width: 250px;
+      width: 245px;
+      height: 100vh;
       background-color: white;
       border-right: 1px solid #dbdbdb;
-      padding: 20px;
-      height: 100vh;
+      padding: 20px 12px;
       position: fixed;
+      top: 0;
+      left: 0;
+      display: flex;
+      flex-direction: column;
     }
 
     .sidebar h2 {
       font-family: 'Billabong', cursive;
-      font-size: 32px;
+      font-size: 24px;
+      margin: 25px 12px 35px;
+      padding-bottom: 20px;
     }
 
     .sidebar ul {
       list-style: none;
-      padding: 0;
+      flex-grow: 1;
     }
 
     .sidebar ul li {
-      padding: 15px 0;
+      margin: 12px 0;
+    }
+
+    .sidebar ul li a {
+      text-decoration: none;
+      font-size: 25px;
+      color: black;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 8px;
+      border-radius: 8px;
+      transition: background-color 0.2s;
+    }
+
+    .sidebar ul li a:hover {
+      background-color: #f2f2f2;
+    }
+
+    .sidebar ul li a i {
+      font-size: 22px;
+      width: 24px;
+      text-align: center;
+    }
+
+    .sidebar .profile-pic {
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .sidebar .more {
+      margin-top: auto;
+      margin-bottom: 20px;
+    }
+
+    /* Main Content Styles */
+    .main-content {
+      width: 100%;
+      max-width: 630px;
+      padding: 30px 0;
+    }
+    
+
+    /* Stories */
+    .stories {
+      display: flex;
+      overflow-x: auto;
+      gap: 15px;
+      padding: 16px;
+      background: white;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      margin-bottom: 24px;
+      scrollbar-width: none;
+    }
+
+    .stories::-webkit-scrollbar {
+      display: none;
+    }
+
+    .story {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .story-avatar {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      padding: 2px;
+      background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
+    }
+
+    .story-avatar img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      border: 2px solid white;
+      object-fit: cover;
+    }
+
+    .story-username {
+      font-size: 12px;
+      max-width: 70px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    /* Posts */
+    .post {
+      background: white;
+      border: 1px solid #dbdbdb;
+      border-radius: 8px;
+      margin-bottom: 24px;
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      padding: 14px 16px;
+    }
+
+    .post-header img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 12px;
+      object-fit: cover;
+    }
+
+    .post-header .username {
+      font-weight: 600;
+      font-size: 14px;
+      flex-grow: 1;
+    }
+
+    .post-header .options {
+      font-weight: bold;
       font-size: 18px;
       cursor: pointer;
     }
 
-    .main {
-      margin-left: 270px;
-      padding: 40px;
-      flex-grow: 1;
-      justify-content: center;
-     align-items:center ;
-     text-align: center;
+    .post-image {
+      width: 100%;
+      max-height: 800px;
+      object-fit: cover;
     }
 
-
-
-    .container {
-      max-width: 600px;
-      margin: auto;
-    }
-
-    .user {
+    .post-actions {
       display: flex;
-      align-items: center;
       justify-content: space-between;
-      background-color: white;
-      padding: 10px;
-      margin: 10px 0;
-      border-radius: 8px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      padding: 6px 4px 8px 12px;
+      font-size: 24px;
     }
 
-    .user-info {
+    .post-actions .left-actions {
+      display: flex;
+      gap: 16px;
+    }
+
+    .post-actions i {
+      cursor: pointer;
+    }
+
+    .post-likes {
+      padding: 0 16px;
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .post-caption {
+      padding: 0 16px;
+      font-size: 14px;
+      margin-bottom: 8px;
+    }
+
+    .post-caption .username {
+      font-weight: 600;
+      margin-right: 4px;
+    }
+
+    .post-comments {
+      padding: 0 16px;
+      font-size: 14px;
+      color: #8e8e8e;
+      margin-bottom: 8px;
+    }
+
+    .post-time {
+      padding: 0 16px;
+      font-size: 10px;
+      color: #8e8e8e;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .comment-box {
       display: flex;
       align-items: center;
+      padding: 16px;
+      border-top: 1px solid #efefef;
     }
 
-    .user-info img {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      margin-right: 12px;
-    }
-
-    .user-info div {
-      line-height: 1.2;
-    }
-
-    .user-info .username {
-      font-weight: bold;
-    }
-
-    .follow-button {
-      padding: 5px 12px;
-      font-size: 14px;
-      background-color: black;
-      color: white;
+    .comment-box input {
+      flex-grow: 1;
       border: none;
-      border-radius: 6px;
+      outline: none;
+      font-size: 14px;
+    }
+
+    .comment-box .post-button {
+      color: #0095f6;
+      font-weight: 600;
+      font-size: 14px;
       cursor: pointer;
-      transition: 0.3s ease;
-      min-width: 80px;
+      opacity: 0.3;
     }
 
-    .follow-button.following {
-      background-color: #dbdbdb;
-      color: black;
+    .comment-box input:valid + .post-button {
+      opacity: 1;
     }
-    a {
-  text-decoration: none;
-}
-.modal {
-  display: none;
-  position: fixed;
-  z-index: 10;
-  left: 0;
-  top: 0;
-  width: 100%;
-  height: 100%;
-  overflow: auto;
-  background-color: rgba(0,0,0,0.6);
-}
 
-.modal-content {
-  background-color: #fff;
-  margin: 5% auto;
-  padding: 30px;
-  border-radius: 12px;
-  width: 400px;
-  text-align: center;
-  position: relative;
-}
+    .liked {
+      color: #ed4956;
+    }
 
-.modal-content h2 {
-  margin-bottom: 20px;
-  font-size: 18px;
-}
+    .saved {
+      color: #262626;
+    }
 
-.upload-area {
-  border: 2px dashed #ccc;
-  padding: 40px;
-  cursor: pointer;
-  background-color: #fafafa;
-}
+    /* Responsive adjustments */
+    @media (max-width: 935px) {
+      .main-content {
+        margin-left: 72px;
+        width: calc(100% - 72px);
+      }
+      
+      .sidebar {
+        width: 72px;
+        align-items: center;
+        padding: 20px 4px;
+      }
+      
+      .sidebar h2 {
+        display: none;
+      }
+      
+      .sidebar ul li a span {
+        display: none;
+      }
+      
+      .sidebar ul li a {
+        justify-content: center;
+        padding: 12px;
+      }
+      
+      .sidebar ul li a i {
+        font-size: 24px;
+      }
+    }
+  
+  .suggestions-sidebar {
+    width: 320px;
+    padding: 20px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+  }
 
-.upload-area button {
-  background-color: #0095f6;
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  margin-top: 15px;
-  border-radius: 4px;
-  cursor: pointer;
-}
+  .current-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
 
-.close {
-  position: absolute;
-  top: 15px;
-  right: 20px;
-  font-size: 24px;
-  cursor: pointer;
-}
-margin: 0;
-font-family: Arial, sans-serif;
-background-color: #fff;
-display: flex;
-}
+  .profile-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+  }
 
-/* Sidebar */
-.sidebar {
-width: 80px;
-height: 100vh;
-background-color: white;
-border-right: 1px solid #dbdbdb;
-display: flex;
-flex-direction: column;
-align-items: center;
-padding-top: 20px;
-}
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+  }
 
-.sidebar a {
-text-decoration: none;
-font-size: 24px;
-color: black;
-margin: 20px 0;
-}
+  .user-info strong {
+    font-size: 14px;
+  }
 
+  .user-info span {
+    font-size: 12px;
+    color: #8e8e8e;
+  }
+
+  .suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+    color: #8e8e8e;
+    font-size: 14px;
+  }
+
+  .suggestions-header a {
+    color: #262626;
+    font-weight: 600;
+  }
+
+  .suggestion {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .follow-btn {
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+
+  /* Adjust body to prevent overlap */
+  body {
+    justify-content: space-between;
+  }
+
+  /* Make sure main content doesn't overlap with sidebar */
+  .main-content {
+    margin-right: 320px;
+  }
+  body {
+    justify-content: center;
+    padding-right: 320px; /* Space for suggestions sidebar */
+  }
+
+  .main-content {
+    margin-left: 245px; /* Sidebar width */
+    margin-right: 0; /* Remove previous right margin */
+    width: 630px; /* Fixed width for posts */
+  }
+
+  .suggestions-sidebar {
+    width: 293px;
+    padding: 24px 16px;
+    position: fixed;
+    right: 0;
+    top: 0;
+    height: 100vh;
+    overflow-y: auto;
+    background-color: #fafafa;
+    border-left: 1px solid #dbdbdb;
+  }
+
+  .current-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+
+  .suggestions-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    font-size: 14px;
+  }
+
+  .suggestions-header span:first-child {
+    color: #8e8e8e;
+    font-weight: 600;
+  }
+
+  .suggestions-header a {
+    color: #262626;
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  .suggestion {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+  }
+
+  .suggestion-info {
+    flex-grow: 1;
+    margin-left: 12px;
+  }
+
+  .suggestion-username {
+    font-weight: 600;
+    font-size: 14px;
+  }
+
+  .suggestion-status {
+    color: #8e8e8e;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+
+  .follow-btn {
+    color: #0095f6;
+    font-weight: 600;
+    font-size: 12px;
+    background: none;
+    border: none;
+    cursor: pointer;
+  }
+  
+.follow-btn.following {
+    color: #262626 !important;
+    font-weight: 600 !important;
+}
 
   </style>
 </head>
 <body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h2>Instagram</h2>
+    <ul>
+      <li>  <a href="{% url 'FriendUser' %}">🏠 Home </a></li>
+      <li><a href="{% url 'SearchUser' %}">🔍 Search </a></li>
+      <li> <a href="{% url 'ExploreUser' %}">🧭 Explore </a></li>
+      <li><a href="{% url 'ReelsUser' %}">🎞  Reels </a></li>
+      <li><a href="{% url 'MessageUser' %}">✉ Messages </a></li>
+      <li><a href="{% url 'NotificationUser' %}">🔔Notifications </a></li>
+      <li><a href="{% url 'CreateUser' %}"><div class="sidebar-item" onclick="openModal()">➕ Create</div> </a></li> 
+      <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li> </ul></div>
+
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Stories -->
+    <div class="stories">
+      <div class="story">
+        <div class="story-avatar">
+          <img src="{% static 'posts/post3.jpg' %}" alt="User">
+        </div>
+        <div class="story-username">your_story</div>
+      </div>
+      <div class="story">
+        <div class="story-avatar">
+          <img src="{% static 'posts/girl1.jpg' %}" alt="User">
+        </div>
+        <div class="story-username">mehak10</div>
+      </div>
+      <div class="story">
+        <div class="story-avatar">
+          <img src="{% static 'posts/boy2.jpg' %}" alt="User">
+        </div>
+        <div class="story-username">gurkaran_singh</div>
+      </div>
+      <div class="story">
+        <div class="story-avatar">
+          <img src="{% static 'posts/boy1.jpg' %}" alt="User">
+        </div>
+        <div class="story-username">arun_372</div>
+      </div>
+      <div class="story">
+        <div class="story-avatar">
+          <img src="{% static 'posts/girl1.jpg' %}" alt="User">
+        </div>
+        <div class="story-username">tanisha1</div>
+      </div>
+    </div>
+
+    <!-- Posts -->
+    <div class="post">
+      <div class="post-header">
+        <img src="{% static 'posts/girl1.jpg' %}" alt="User">
+        <div class="username">mehak10</div>
+        <div class="options">⋯</div>
+      </div>
+      <img class="post-image" src="{% static 'posts/girl3.webp' %}" alt="Post">
+      <div class="post-actions">
+        <div class="left-actions">
+          <i class="far fa-heart" onclick="toggleLike(this)"></i>
+          <i class="far fa-comment" onclick="focusComment(this)"></i>
+          <i class="far fa-paper-plane"></i>
+        </div>
+        <i class="far fa-bookmark" onclick="toggleSave(this)"></i>
+      </div>
+      <div class="post-likes">1,234 likes</div>
+      <div class="post-caption">
+        <span class="username">user1</span>
+        <span>This is a beautiful day! #nature #photography</span>
+      </div>
+      <div class="post-comments">View all 42 comments</div>
+      <div class="post-time">2 HOURS AGO</div>
+      <div class="comment-box">
+        <input type="text" placeholder="Add a comment..." onkeyup="checkComment(this)">
+        <div class="post-button" onclick="postComment(this)">Post</div>
+      </div>
+    </div>
+
+    <div class="post">
+      <div class="post-header">
+        <img src="{% static 'posts/boy1.jpg' %}" alt="User">
+        <div class="username">arun_372</div>
+        <div class="options">⋯</div>
+      </div>
+      <img class="post-image" src="{% static 'posts/boy1.jpg' %}" alt="Post">
+      <div class="post-actions">
+        <div class="left-actions">
+          <i class="far fa-heart" onclick="toggleLike(this)"></i>
+          <i class="far fa-comment" onclick="focusComment(this)"></i>
+          <i class="far fa-paper-plane"></i>
+        </div>
+        <i class="far fa-bookmark" onclick="toggleSave(this)"></i>
+      </div>
+      <div class="post-likes">3,567 likes</div>
+      <div class="post-caption">
+        <span class="username">travel_lover</span>
+        <span>Exploring new places is my passion ✈️ #wanderlust #travel</span>
+      </div>
+      <div class="post-comments">View all 128 comments</div>
+      <div class="post-time">5 HOURS AGO</div>
+      <div class="comment-box">
+        <input type="text" placeholder="Add a comment..." onkeyup="checkComment(this)">
+        <div class="post-button" onclick="postComment(this)">Post</div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Suggestions Sidebar -->
+<div class="suggestions-sidebar">
+  <div class="current-user">
+    <img src="{% static 'posts/post3.jpg' %}" alt="Profile" class="profile-pic">
+    <div class="user-info">
+      <strong>{{ request.user.username }}</strong>
+      <span>Your Profile</span>
+    </div>
+  </div>
+  
+  <div class="suggestions-header">
+    <span>Suggestions For You</span>
+    <a href="#">See All</a>
+  </div>
+  
+  <div class="suggestions-list">
+    <div class="suggestion">
+      <img src="{% static 'posts/boy2.jpg' %}" alt="User" class="profile-pic">
+      <div class="user-info">
+        <strong>user1</strong>
+        <span>Followed by user2</span>
+      </div>
+      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+    </div>
     
-         <div class="sidebar">
-          <h2>Instagram</h2>
-          <ul>
-            <li>  <a href="{% url 'FriendUser' %}">🏠 Home </a></li>
-            <li><a href="{% url 'SearchUser' %}">🔍 Search </a></li>
-            <li> <a href="{% url 'ExploreUser' %}">🧭 Explore </a></li>
-            <li><a href="{% url 'ReelsUser' %}">🎞  Reels </a></li>
-            <li><a href="{% url 'MessageUser' %}">✉ Messages </a></li>
-            <li><a href="{% url 'NotificationUser' %}">🔔 Notifications </a></li>
-            <li><a href="{% url 'CreateUser' %}"><div class="sidebar-item" onclick="openModal()">➕ Create</div> </a></li> 
-            <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li> </ul>
-            {% comment %} <div class="sidebar">
-                <li><a href="{% url 'FriendUser' %}">🏠 Home </a></li>
-                <li><a href="{% url 'SearchUser' %}">🔍 Search</a></li>
-                <li><a href="{% url 'ExploreUser' %}">🧭 Explore</a></li>
-                <li><a href="{% url 'ReelsUser' %}">🎞 Reels</a></li>
-                <li><a href="{% url 'MessageUser' %}">✉ Messages</a></li>
-                <li><a href="{% url 'NotificationUser' %}">🔔 Notifications</a></li>
-                <li><a href="{% url 'CreateUser' %}">➕ Create</a></li>
-                <li><a href="{% url 'ProfileUser' %}">👤 Profile</a></li> {% endcomment %}
-        
-                  
-                  
-              {% comment %} </div> {% endcomment %}
-            <!-- Create Post Modal -->
-<div id="postModal" class="modal">
-    <div class="modal-content" ondragover="event.preventDefault()" ondrop="handleDrop(event)">
-      <span class="close" onclick="closeModal()">&times;</span>
-      <h2>Create new post</h2>
-      <div class="upload-area" onclick="document.getElementById('fileInput').click()">
-        <p>📷</p>
-        <p>Drag photos and videos here</p>
-        <button>Select from computer</button>
-        <input type="file" id="fileInput" accept="image/*,video/*" style="display:none" onchange="previewFile(event)" />
-      </div>
-      <img id="filePreview" style="display:none; max-width: 100%; margin-top: 20px;" />
-    </div>
-  </div>
-           
-            
-
-
-              
-          </ul>
-        </div>
-        <div class="main">
-            <div class="suggestion-box">
-              <h3>Find friends and accounts you like</h3>
-              <p>Try following 5 or more accounts for a personalized experience.</p>
-              <a href="profile.html" style="text-decoration: none; color: inherit;">
-                <div class="sidebar-profile" id="sidebarProfile">
-                  <!-- Will be filled by JS -->
-                </div>
-              </a>
-              
-        
-  <div class="container">
-    <h2>Suggested Users</h2>
-   
-      
-
-    <!-- Example user -->
-    <div class="user">
+    <div class="suggestion">
+      <img src="{% static 'posts/girl1.jpg' %}" alt="User" class="profile-pic">
       <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=1" alt="Profile">
-        <div>
-          <div class="username">jasminesoni_29</div>
-          <div style="font-size: 12px; color: gray;">Jasmine 🌸</div>
-        </div>
+        <strong>traveler</strong>
+        <span>New to Instagram</span>
       </div>
-      <button class="follow-button">Follow</button>
+      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
     </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=2" alt="Profile">
-        <div>
-          <div class="username">zoya_khan3030</div>
-          <div style="font-size: 12px; color: gray;">Zoyaaaa</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=3" alt="Profile">
-        <div>
-          <div class="username">guneet_25</div>
-          <div style="font-size: 12px; color: gray;">GUNEET SONI 🌸</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=4" alt="Profile">
-        <div>
-          <div class="username">agamya1</div>
-          <div style="font-size: 12px; color: gray;">Agamyaa ‼️</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=5" alt="Profile">
-        <div>
-          <div class="username">daman_10</div>
-          <div style="font-size: 12px; color: gray;">Daman 💗</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=6" alt="Profile">
-        <div>
-          <div class="username">harshit.</div>
-          <div style="font-size: 12px; color: gray;">Harshit Singla</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-
-    <div class="user">
-      <div class="user-info">
-        <img src="https://i.pravatar.cc/48?img=7" alt="Profile">
-        <div>
-          <div class="username">monali</div>
-          <div style="font-size: 12px; color: gray;">MONALI SHARMA 🌻</div>
-        </div>
-      </div>
-      <button class="follow-button">Follow</button>
-    </div>
-  </div>
- <!-- Create Post Modal -->
-<div id="createModal" class="modal">
-    <div class="modal-content" id="step1">
-      <span class="close" id="closeModalBtn">&times;</span>
-      <h2>Create new post</h2>
-      <div class="upload-area">
-        <p>Drag photos and videos here</p>
-        <input type="file" id="fileInput" accept="image/*" hidden>
-        <button onclick="document.getElementById('fileInput').click()">Select from computer</button>
-      </div>
-    </div>
-  
-    <!-- Step 2: Caption + Share -->
-    <div class="modal-content" id="step2" style="display: none;">
-      <span class="close" id="closeModalBtn2">&times;</span>
-      <h2>Preview & Share</h2>
-      <img id="previewImage" src="" style="max-width: 100%; border-radius: 10px;">
-      <textarea id="captionInput" placeholder="Write a caption..." style="width: 100%; margin-top: 10px;"></textarea>
-      <button id="shareBtn">Share</button>
-    </div>
-  </div>
-  
-  <!-- Profile Posts Section -->
-  <div id="profilePosts" style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px;"></div>
-  
-  
-
-
-  <script>
-    {% comment %} document.querySelectorAll('.follow-button').forEach(button => {
-      button.addEventListener('click', () => {
-        button.classList.toggle('following');
-        button.textContent = button.classList.contains('following') ? 'Following' : 'Follow';
-      });
-    });
     
-  const user = JSON.parse(localStorage.getItem("instagramUser"));
-  function openModal() {
-  document.getElementById("postModal").style.display = "block";
-}
+    <div class="suggestion">
+      <img src="{% static 'posts/girl3.webp' %}" alt="User" class="profile-pic">
+      <div class="user-info">
+        <strong>photographer</strong>
+        <span>Followed by user1</span>
+      </div>
+      <button class="follow-btn" onclick="toggleFollow(this)">Follow</button>
+    </div>
+  </div>
+</div>
 
-function closeModal() {
-  document.getElementById("postModal").style.display = "none";
-  document.getElementById("filePreview").style.display = "none";
-}
-
-function previewFile(event) {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    const preview = document.getElementById("filePreview");
-    preview.src = e.target.result;
-    preview.style.display = "block";
-  };
-
-  if (file) {
-    reader.readAsDataURL(file);
-  }
-} {% endcomment %}
-
-{% comment %} function handleDrop(event) {
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  document.getElementById("fileInput").files = event.dataTransfer.files;
-  previewFile({ target: { files: [file] } });
-}
-
+  <!-- JavaScript -->
 <script>
-    function openModal() {
-      document.getElementById("postModal").style.display = "flex";
-    }
-  
-    function closeModal() {
-      document.getElementById("postModal").style.display = "none";
-      resetModal();
-    }
-  
-    function showPreview(event) {
-      const file = event.target.files[0];
-      if (file && file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = function(e) {
-          document.getElementById("previewImage").src = e.target.result;
-          document.getElementById("uploadStep").style.display = "none";
-          document.getElementById("captionStep").style.display = "block";
-        };
-        reader.readAsDataURL(file);
+  // Utility function to get CSRF token
+  function getCookie(name) {
+    let cookieValue = null;
+    if (document.cookie && document.cookie !== '') {
+      const cookies = document.cookie.split(';');
+      for (let i = 0; i < cookies.length; i++) {
+        const cookie = cookies[i].trim();
+        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+          cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+          break;
+        }
       }
     }
-  
-    function sharePost() {
-      const imgSrc = document.getElementById("previewImage").src;
-      const caption = document.getElementById("captionInput").value;
-  
-      const post = document.createElement("div");
-      const img = document.createElement("img");
-      img.src = imgSrc;
-      img.alt = caption;
-  
-      post.appendChild(img);
-      document.getElementById("profilePosts").prepend(post);
-  
-      closeModal();
-    }
-  
-    function resetModal() {
-      document.getElementById("uploadStep").style.display = "block";
-      document.getElementById("captionStep").style.display = "none";
-      document.getElementById("fileInput").value = "";
-      document.getElementById("captionInput").value = "";
-      document.getElementById("previewImage").src = "";
-    }
-  
-    window.onclick = function(event) {
-      const modal = document.getElementById("postModal");
-      if (event.target === modal) {
-        closeModal();
-      }
-    }
-    // Elements
-    const modal = document.getElementById("createModal");
-    const step1 = document.getElementById("step1");
-    const step2 = document.getElementById("step2");
-    const fileInput = document.getElementById("fileInput");
-    const previewImage = document.getElementById("previewImage");
-    const captionInput = document.getElementById("captionInput");
-    const profilePosts = document.getElementById("profilePosts");
-    
-    // Show modal
-    document.getElementById("createButton").addEventListener("click", () => {
-      modal.style.display = "block";
-      step1.style.display = "block";
-      step2.style.display = "none";
-    });
-    
-    // Close buttons
-    document.getElementById("closeModalBtn").onclick = closeModal;
-    document.getElementById("closeModalBtn2").onclick = closeModal;
-    
-    function closeModal() {
-      modal.style.display = "none";
-      fileInput.value = "";
-      captionInput.value = "";
-      previewImage.src = "";
-    }
-    
-    // Go to Step 2 on image select
-    fileInput.addEventListener("change", function () {
-      const file = this.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = function (e) {
-          previewImage.src = e.target.result;
-          step1.style.display = "none";
-          step2.style.display = "block";
-        };
-        reader.readAsDataURL(file);
-      }
-    });
-    
-    // Share button adds post to profile
-    document.getElementById("shareBtn").addEventListener("click", () => {
-      const img = document.createElement("img");
-      img.src = previewImage.src;
-      img.alt = captionInput.value;
-      img.style.width = "200px";
-      img.style.borderRadius = "8px";
-    
-      const caption = document.createElement("p");
-      caption.innerText = captionInput.value;
-      caption.style.maxWidth = "200px";
-    
-      const post = document.createElement("div");
-      post.appendChild(img);
-      post.appendChild(caption);
-    
-      profilePosts.appendChild(post);
-      closeModal();
-    }); {% endcomment %}
-    document.querySelectorAll('.follow-button').forEach(button => {
-      button.addEventListener('click', () => {
-        button.classList.toggle('following');
-        button.textContent = button.classList.contains('following') ? 'Following' : 'Follow';
-      });
-    });
-    
-  const user = JSON.parse(localStorage.getItem("instagramUser"));
-  function openModal() {
-  document.getElementById("postModal").style.display = "block";
-}
-
-function closeModal() {
-  document.getElementById("postModal").style.display = "none";
-  document.getElementById("filePreview").style.display = "none";
-}
-
-function previewFile(event) {
-  const file = event.target.files[0];
-  const reader = new FileReader();
-
-  reader.onload = function (e) {
-    const preview = document.getElementById("filePreview");
-    preview.src = e.target.result;
-    preview.style.display = "block";
-  };
-
-  if (file) {
-    reader.readAsDataURL(file);
+    return cookieValue;
   }
+
+  // Like functionality
+  function toggleLike(el) {
+    const post = el.closest('.post');
+    const likesCount = post.querySelector('.post-likes');
+    let currentLikes = parseInt(likesCount.textContent.replace(/,/g, '').replace(' likes', ''));
+
+    if (el.classList.contains('liked')) {
+      el.classList.remove('liked');
+      el.classList.replace('fas', 'far');
+      currentLikes--;
+    } else {
+      el.classList.add('liked');
+      el.classList.replace('far', 'fas');
+      currentLikes++;
+    }
+
+    likesCount.textContent = currentLikes.toLocaleString() + ' likes';
+
+    const postId = post.dataset.postId || '1';
+    console.log(`Post ${postId} ${el.classList.contains('liked') ? 'liked' : 'unliked'}`);
+  }
+
+  // Save functionality
+  function toggleSave(el) {
+    el.classList.toggle('saved');
+    el.classList.toggle('far');
+    el.classList.toggle('fas');
+
+    const postId = el.closest('.post').dataset.postId || '1';
+    console.log(`Post ${postId} ${el.classList.contains('saved') ? 'saved' : 'unsaved'}`);
+  }
+
+  // Comment functionality
+  function focusComment(el) {
+    const input = el.closest('.post').querySelector('.comment-box input');
+    input.focus();
+  }
+
+  function checkComment(input) {
+    const postButton = input.nextElementSibling;
+    if (input.value.trim() !== "") {
+      postButton.style.opacity = "1";
+      postButton.style.cursor = "pointer";
+    } else {
+      postButton.style.opacity = "0.3";
+      postButton.style.cursor = "default";
+    }
+  }
+
+  function postComment(button) {
+    const input = button.previousElementSibling;
+    const commentText = input.value.trim();
+
+    if (commentText !== "") {
+      const commentsSection = input.closest('.post').querySelector('.post-comments');
+      const currentText = commentsSection.textContent;
+
+      if (currentText.startsWith("View all")) {
+        const commentCount = parseInt(currentText.replace('View all ', '').replace(' comments', ''));
+        commentsSection.innerHTML = `
+          <div><strong>${'{{ request.user.username }}'}</strong> ${commentText}</div>
+          <div>View all ${commentCount + 1} comments</div>
+        `;
+      } else {
+        const newComment = document.createElement('div');
+        newComment.innerHTML = `<strong>${'{{ request.user.username }}'}</strong> ${commentText}`;
+        commentsSection.appendChild(newComment);
+      }
+
+      input.value = "";
+      button.style.opacity = "0.3";
+
+      const postId = input.closest('.post').dataset.postId || '1';
+      console.log(`Comment "${commentText}" posted to post ${postId}`);
+    }
+  }
+
+  // Follow functionality
+  function toggleFollow(button) {
+    const isFollowing = button.textContent.trim() === 'Following';
+    const username = button.closest('.suggestion').querySelector('.user-info strong').textContent;
+    const followerCountElement = document.getElementById("follower-count"); // This targets the follower count on profile page
+    const followingCountElement = document.getElementById("following-count"); // This targets the following count on profile page
+
+    // Update UI immediately
+    button.textContent = isFollowing ? 'Follow' : 'Following';
+    button.classList.toggle('following');
+
+    // Get the current follower and following counts
+    let followerCount = parseInt(followerCountElement.textContent);
+    let followingCount = parseInt(followingCountElement.textContent);
+
+    // Increase or decrease the follower count based on action
+    if (isFollowing) {
+        followerCount--;
+        followingCount++;
+    } else {
+        followerCount++;
+        followingCount--;
+    }
+
+    // Update the follower and following counts in the DOM
+    followerCountElement.textContent = followerCount;
+    followingCountElement.textContent = followingCount;
+
+    // Save the updated count in localStorage
+    localStorage.setItem("followerCount", followerCount);
+    localStorage.setItem("followingCount", followingCount);
+
+    // AJAX call to update the backend
+    fetch('/follow/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+            'X-CSRFToken': getCookie('csrftoken')
+        },
+        body: JSON.stringify({
+            username: username,
+            action: isFollowing ? 'unfollow' : 'follow'
+        })
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status !== 'success') {
+            // Revert on failure
+            button.textContent = isFollowing ? 'Following' : 'Follow';
+            button.classList.toggle('following');
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        // Revert on failure
+        button.textContent = isFollowing ? 'Following' : 'Follow';
+        button.classList.toggle('following');
+    });
 }
 
-function handleDrop(event) {
-  event.preventDefault();
-  const file = event.dataTransfer.files[0];
-  document.getElementById("fileInput").files = event.dataTransfer.files;
-  previewFile({ target: { files: [file] } });
-}
+</script>
 
-
- 
-    
-  
- 
-
-  </script>
 </body>
 </html>
